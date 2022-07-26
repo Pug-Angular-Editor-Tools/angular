@@ -55,13 +55,23 @@
   "dependencies": {
     "@babel/core": "^7.17.2",
     "reflect-metadata": "^0.1.2",
+    "@types/pug": "^2.0.6",
+    "@volar/pug-language-service": "file:/home/connor/Python/lsp/volar/packages/pug-language-service",
+    "@volar/code-gen": "file:/home/connor/Python/lsp/volar/packages/code-gen",
+    "@volar/shared": "file:/home/connor/Python/lsp/volar/packages/shared",
+    "@volar/source-map": "file:/home/connor/Python/lsp/volar/packages/source-map",
     "chokidar": "^3.0.0",
     "convert-source-map": "^1.5.1",
     "dependency-graph": "^0.11.0",
     "magic-string": "^0.26.0",
+    "pug": "^3.0.2",
+    "pug-lexer": "^5.0.1",
+    "pug-parser": "^6.0.0",
+    "pug-runtime": "^3.0.1",
     "semver": "^7.0.0",
     "sourcemap-codec": "^1.4.8",
     "tslib": "^2.3.0",
+    "void-elements": "^3.1.0",
     "yargs": "^17.2.1"
   },
   "peerDependencies": {

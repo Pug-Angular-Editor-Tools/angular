@@ -6,7 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import * as pugLs from '@volar/pug-language-service';
 import ts from 'typescript';
+import * as htmlLs from 'vscode-html-languageservice';
 
 import {ResourceLoader, ResourceLoaderContext} from '../../annotations';
 import {NgCompilerAdapter, ResourceHostContext} from '../../core/api';
@@ -25,6 +27,8 @@ export class AdapterResourceLoader implements ResourceLoader {
   private cache = new Map<string, string>();
   private fetching = new Map<string, Promise<void>>();
   private lookupResolutionHost = createLookupResolutionHost(this.adapter);
+
+  private pugLs = pugLs.getLanguageService(htmlLs.getLanguageService())
 
   canPreload = !!this.adapter.readResource;
   canPreprocess = !!this.adapter.transformResource;
@@ -147,8 +151,18 @@ export class AdapterResourceLoader implements ResourceLoader {
     if (typeof result !== 'string') {
       throw new Error(`HostResourceLoader: loader(${resolvedUrl}) returned a Promise`);
     }
-    this.cache.set(resolvedUrl, result);
-    return result;
+
+    let realResult: string
+    if (resolvedUrl.endsWith('.pug')) {
+      const pugDocument = this.pugLs.parsePugDocument(result);
+      realResult = pugDocument.htmlTextDocument.getText();
+    }
+    else {
+      realResult = result;
+    }
+
+    this.cache.set(resolvedUrl, realResult);
+    return realResult;
   }
 
   /**
