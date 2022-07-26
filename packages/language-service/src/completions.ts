@@ -450,7 +450,8 @@ export class CompletionBuilder<N extends TmplAstNode|AST> {
       const positionInTextNode = this.position - this.node.sourceSpan.start.offset;
       // We only provide element completions in a text node when there is an open tag immediately to
       // the left of the position.
-      return this.node.value.substring(0, positionInTextNode).endsWith('<');
+      return this.node.value.substring(0, positionInTextNode).endsWith('<') ||
+          this.node.value.substring(0, positionInTextNode).trim() === '';
     } else if (this.node instanceof TmplAstElement) {
       return this.nodeContext === CompletionNodeContext.ElementTag;
     }
