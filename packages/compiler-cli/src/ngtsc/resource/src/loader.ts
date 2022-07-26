@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import * as pugLs from '@volar/pug-language-service';
+import * as pugLs from 'pugjs-language-service';
 import ts from 'typescript';
 import * as htmlLs from 'vscode-html-languageservice';
 

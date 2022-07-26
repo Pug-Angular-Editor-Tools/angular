@@ -3076,38 +3076,12 @@
     "@typescript-eslint/types" "4.33.0"
     eslint-visitor-keys "^2.0.0"
 
-"@volar/code-gen@0.38.1", "@volar/code-gen@file:../volar/packages/code-gen":
+"@volar/code-gen@0.38.1":
   version "0.38.1"
+  resolved "https://registry.yarnpkg.com/@volar/code-gen/-/code-gen-0.38.1.tgz#0f2957057c92a7f209b5c333d68c80e2a09adf23"
+  integrity sha512-QnEJfCPhPqzhQY/iN7euGoUWphyv4TmN1xK/HEpnXwgqgvIyLk/Ih3rvAFqlP6I5fTaCu6TGf9kZmjw9AlEeMA==
   dependencies:
     "@volar/source-map" "0.38.1"
-
-"@volar/pug-language-service@file:../volar/packages/pug-language-service":
-  version "0.38.1"
-  dependencies:
-    "@volar/code-gen" "0.38.1"
-    "@volar/shared" "0.38.1"
-    "@volar/source-map" "0.38.1"
-    "@volar/transforms" "0.38.1"
-    pug-lexer "^5.0.1"
-    pug-parser "^6.0.0"
-    pug-runtime "^3.0.1"
-    void-elements "^3.1.0"
-    vscode-languageserver-textdocument "^1.0.4"
-    vscode-languageserver-types "^3.17.1"
-
-"@volar/pug-language-service@file:./../volar/packages/pug-language-service":
-  version "0.38.1"
-  dependencies:
-    "@volar/code-gen" "0.38.1"
-    "@volar/shared" "0.38.1"
-    "@volar/source-map" "0.38.1"
-    "@volar/transforms" "0.38.1"
-    pug-lexer "^5.0.1"
-    pug-parser "^6.0.0"
-    pug-runtime "^3.0.1"
-    void-elements "^3.1.0"
-    vscode-languageserver-textdocument "^1.0.4"
-    vscode-languageserver-types "^3.17.1"
 
 "@volar/shared@0.38.1":
   version "0.38.1"
@@ -3119,32 +3093,15 @@
     vscode-languageserver-textdocument "^1.0.4"
     vscode-uri "^3.0.3"
 
-"@volar/shared@file:../volar/packages/shared":
-  version "0.38.1"
-  dependencies:
-    upath "^2.0.1"
-    vscode-languageserver-protocol "^3.17.1"
-    vscode-languageserver-textdocument "^1.0.4"
-    vscode-uri "^3.0.3"
-
 "@volar/source-map@0.38.1":
   version "0.38.1"
   resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-0.38.1.tgz#2ddc906e29b488ab48687872ff33196e4bddf05f"
   integrity sha512-1DoB8BYTle81DdLChnurYteN208qvsfz4IgwjH6T2YcnBtUvtscxMOwg0bfQJskfoLrJ5gESBvEpU8tWsEVyrQ==
 
-"@volar/source-map@file:../volar/packages/source-map":
-  version "0.38.1"
-
 "@volar/transforms@0.38.1":
   version "0.38.1"
   resolved "https://registry.yarnpkg.com/@volar/transforms/-/transforms-0.38.1.tgz#80ed6bcabf28cbad30fba88bc950ed35dc856e06"
   integrity sha512-7w1HQcJuRKbE9o8kLXEZiZ5bbqicyxkLUoqSFYL9jc1DJpp7r3BKeAuSUWYdZ3c2JI0xcv9srU+fVhoevBagVg==
-  dependencies:
-    "@volar/shared" "0.38.1"
-    vscode-languageserver-types "^3.17.1"
-
-"@volar/transforms@file:../volar/packages/transforms":
-  version "0.38.1"
   dependencies:
     "@volar/shared" "0.38.1"
     vscode-languageserver-types "^3.17.1"
@@ -13301,6 +13258,22 @@ pug@^3.0.2:
     pug-parser "^6.0.0"
     pug-runtime "^3.0.1"
     pug-strip-comments "^2.0.0"
+
+pugjs-language-service@0.38.1-angular:
+  version "0.38.1-angular"
+  resolved "https://registry.yarnpkg.com/pugjs-language-service/-/pugjs-language-service-0.38.1-angular.tgz#a7224a3f6a592f8bd024599d9b1dd0d6caf8f5a5"
+  integrity sha512-GLGFRDuZhOOEA6S7to+5kJEWwk2BO3iOOnoxksBxM/C0c3gelHZRY5RLB7v1e8sQNWRqUKlHLG+1NYZove9cSw==
+  dependencies:
+    "@volar/code-gen" "0.38.1"
+    "@volar/shared" "0.38.1"
+    "@volar/source-map" "0.38.1"
+    "@volar/transforms" "0.38.1"
+    pug-lexer "^5.0.1"
+    pug-parser "^6.0.0"
+    pug-runtime "^3.0.1"
+    void-elements "^3.1.0"
+    vscode-languageserver-textdocument "^1.0.4"
+    vscode-languageserver-types "^3.17.1"
 
 pump@^2.0.0:
   version "2.0.1"
