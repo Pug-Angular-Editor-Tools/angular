@@ -1,5 +1,5 @@
 {
-  "name": "@angular/compiler-cli",
+  "name": "pugjs-angular-cli",
   "version": "0.0.0-PLACEHOLDER",
   "description": "Angular - the compiler CLI for Node.js",
   "typings": "index.d.ts",
@@ -55,13 +55,23 @@
   "dependencies": {
     "@babel/core": "^7.17.2",
     "reflect-metadata": "^0.1.2",
+    "@types/pug": "^2.0.6",
+    "pugjs-language-service": "0.38.1-angular",
+    "@volar/code-gen": "0.38.1",
+    "@volar/shared": "0.38.1",
+    "@volar/source-map": "0.38.1",
     "chokidar": "^3.0.0",
     "convert-source-map": "^1.5.1",
     "dependency-graph": "^0.11.0",
     "magic-string": "^0.26.0",
+    "pug": "^3.0.2",
+    "pug-lexer": "^5.0.1",
+    "pug-parser": "^6.0.0",
+    "pug-runtime": "^3.0.1",
     "semver": "^7.0.0",
     "sourcemap-codec": "^1.4.8",
     "tslib": "^2.3.0",
+    "void-elements": "^3.1.0",
     "yargs": "^17.2.1"
   },
   "peerDependencies": {

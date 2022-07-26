@@ -8,6 +8,7 @@
 
 
 const {nodeResolve} = require('@rollup/plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
 
 // This is a custom AMD file header that patches the AMD `define` call generated
 // by rollup so that the bundle exposes a CJS-exported function which takes an
@@ -53,8 +54,12 @@ const external = [
 
 module.exports = {
   external,
-  plugins: [nodeResolve({preferBuiltins: true})],
-  output: {
-    banner: amdFileHeader,
+  plugins :
+          [
+            nodeResolve({preferBuiltins : true}),
+            commonjs({ignoreGlobal : true}),
+          ],
+  output : {
+    banner : amdFileHeader,
   }
 };
