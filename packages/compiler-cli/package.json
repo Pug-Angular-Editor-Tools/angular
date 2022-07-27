@@ -1,5 +1,5 @@
 {
-  "name": "@angular/compiler-cli",
+  "name": "pugjs-angular-cli",
   "version": "0.0.0-PLACEHOLDER",
   "description": "Angular - the compiler CLI for Node.js",
   "typings": "index.d.ts",
