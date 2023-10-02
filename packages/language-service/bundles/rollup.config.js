@@ -43,13 +43,13 @@ module.exports = function(provided) {
 };
 `;
 
-const external = ['os', 'fs', 'path', 'typescript'];
+const external =  ['os', 'fs', 'path', 'typescript', 'pug_html_locator_js'];
 
 const config = {
   external,
-  plugins: [nodeResolve({preferBuiltins: true}), commonJs()],
+  plugins: [nodeResolve({preferBuiltins : true}), commonJs()],
   output: {
-    banner: amdFileHeader,
+    banner : amdFileHeader,
   },
 };
 

@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {parse, State} from 'pug_html_locator_js';
 import ts from 'typescript';
 
 import {ResourceLoader, ResourceLoaderContext} from '../../annotations';
@@ -23,6 +24,7 @@ const RESOURCE_MARKER_TS = RESOURCE_MARKER + '.ts';
  */
 export class AdapterResourceLoader implements ResourceLoader {
   private cache = new Map<string, string>();
+  private pugStateCache = new Map<string, State>();
   private fetching = new Map<string, Promise<void>>();
   private lookupResolutionHost: RequiredDelegations<ts.ModuleResolutionHost>;
 
@@ -162,8 +164,27 @@ export class AdapterResourceLoader implements ResourceLoader {
     if (typeof result !== 'string') {
       throw new Error(`HostResourceLoader: loader(${resolvedUrl}) returned a Promise`);
     }
-    this.cache.set(resolvedUrl, result);
-    return result;
+
+    let realResult: string
+    if (resolvedUrl.endsWith('.pug')) {
+      const state = parse(result);
+      this.pugStateCache.set(resolvedUrl, state);
+      realResult = state.htmlText;
+    }
+    else {
+      realResult = result;
+    }
+
+    this.cache.set(resolvedUrl, realResult);
+    return realResult;
+  }
+
+  loadPugState(resolvedUrl: string): State|undefined {
+    if (this.pugStateCache.has(resolvedUrl)) {
+      return this.pugStateCache.get(resolvedUrl)
+    }
+
+    return;
   }
 
   /**

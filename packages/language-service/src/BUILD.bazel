@@ -27,6 +27,7 @@ ts_library(
         "//packages/compiler-cli/src/ngtsc/util",
         "//packages/language-service:api",
         "@npm//@types/node",
+        "@npm//pug_html_locator_js",
         "@npm//typescript",
     ],
 )

@@ -128,6 +128,8 @@
     "ngx-progressbar": "^12.0.0",
     "open-in-idx": "^0.1.1",
     "protractor": "^7.0.0",
+    "node-gyp": "9.4.0",
+    "pug_html_locator_js": "1.0.39",
     "reflect-metadata": "^0.2.0",
     "requirejs": "^2.3.6",
     "rollup": "~2.79.0",
