@@ -10,6 +10,7 @@ import {AST, ASTWithSource, BindingPipe, BindingType, Call, EmptyExpr, ImplicitR
 import {NgCompiler} from '@angular/compiler-cli/src/ngtsc/core';
 import {CompletionKind, PotentialDirective, SymbolKind, TemplateDeclarationSymbol} from '@angular/compiler-cli/src/ngtsc/typecheck/api';
 import {BoundEvent, TextAttribute} from '@angular/compiler/src/render3/r3_ast';
+import {NodeType, rangeAtHtmlLocation} from 'pug_html_locator_js';
 import ts from 'typescript';
 
 import {addAttributeCompletionEntries, AttributeCompletionKind, buildAnimationCompletionEntries, buildAttributeCompletionTable, getAttributeCompletionSymbol} from './attribute_completions';
@@ -451,7 +452,26 @@ export class CompletionBuilder<N extends TmplAstNode|AST> {
       const positionInTextNode = this.position - this.node.sourceSpan.start.offset;
       // We only provide element completions in a text node when there is an open tag immediately to
       // the left of the position.
-      return this.node.value.substring(0, positionInTextNode).endsWith('<');
+
+      const pugState =
+          this.compiler.resourceManager.loadPugState(this.node.sourceSpan.start.file.url)
+
+      if (!pugState) {
+        return this.node.value.substring(0, positionInTextNode).endsWith('<');
+      }
+
+      if (this.node.value.substring(0, positionInTextNode).endsWith('<')) {
+        return true;
+      }
+
+      const nodeType = rangeAtHtmlLocation(this.position, pugState).nodeType
+
+      const isPugTag = this.node.value.substring(0, positionInTextNode).trim() === '' &&
+          nodeType !== NodeType.ATTRIBUTE
+
+      // add nodes types to pug state, then check if I'm in a valid node (probably just !attribute
+      // && !content)
+      return isPugTag;
     } else if (this.node instanceof TmplAstElement) {
       return this.nodeContext === CompletionNodeContext.ElementTag;
     }

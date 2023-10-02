@@ -253,7 +253,7 @@ export class NgCompiler {
   private currentProgram: ts.Program;
   private entryPoint: ts.SourceFile|null;
   private moduleResolver: ModuleResolver;
-  private resourceManager: AdapterResourceLoader;
+  readonly resourceManager: AdapterResourceLoader;
   private cycleAnalyzer: CycleAnalyzer;
   private enabledBlockTypes: Set<string>;
   readonly ignoreForDiagnostics: Set<ts.SourceFile>;

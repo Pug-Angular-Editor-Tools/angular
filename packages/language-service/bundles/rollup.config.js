@@ -43,18 +43,13 @@ module.exports = function(provided) {
 };
 `;
 
-const external = [
-  'os',
-  'fs',
-  'path',
-  'typescript',
-  'typescript/lib/tsserverlibrary',
-];
+const external =
+    ['os', 'fs', 'path', 'typescript', 'typescript/lib/tsserverlibrary', 'pug_html_locator_js'];
 
 module.exports = {
   external,
-  plugins: [nodeResolve({preferBuiltins: true})],
-  output: {
-    banner: amdFileHeader,
+  plugins : [nodeResolve({preferBuiltins : true})],
+  output : {
+    banner : amdFileHeader,
   }
 };
