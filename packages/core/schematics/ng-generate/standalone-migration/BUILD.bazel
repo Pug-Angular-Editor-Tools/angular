@@ -33,6 +33,7 @@ esbuild(
     external = [
         "@angular-devkit/*",
         "typescript",
+        "pug_html_locator_js",
     ],
     format = "cjs",
     platform = "node",
