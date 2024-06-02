@@ -28,7 +28,7 @@ import {
 import {LanguageServiceAdapter, LSParseConfigHost} from './adapters';
 import {ALL_CODE_FIXES_METAS, CodeFixes} from './codefixes';
 import {CompilerFactory} from './compiler_factory';
-import {CompletionBuilder} from './completions';
+import {CompletionBuilder, tagCompletionKind} from './completions';
 import {DefinitionBuilder} from './definitions';
 import {getOutliningSpans} from './outlining_spans';
 import {QuickInfoBuilder} from './quick_info';
@@ -294,6 +294,43 @@ export class LanguageService {
       return undefined;
     }
     return builder.getCompletionsAtPosition(options);
+  }
+
+  getTagCompletions(fileName: string): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    return this.withCompilerAndPerfTracing(PerfPhase.LsCompletions, (compiler) => {
+      return this.getTagCompletionsImpl(fileName, compiler);
+    });
+  }
+
+  private getTagCompletionsImpl(
+    fileName: string,
+    compiler: NgCompiler,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    const templateInfo = getTemplateInfoAtPosition(fileName, 0, compiler);
+    if (templateInfo === undefined) {
+      return;
+    }
+
+    const templateTypeChecker = compiler.getTemplateTypeChecker();
+
+    let potentialTags = Array.from(
+      templateTypeChecker.getPotentialElementTags(templateInfo.component),
+    );
+    // Don't provide non-Angular tags (directive === null) because we expect other extensions
+    // (i.e. Emmet) to provide those for HTML files.
+    potentialTags = potentialTags.filter(([_, directive]) => directive !== null);
+    const entries: ts.CompletionEntry[] = potentialTags.map(([tag, directive]) => ({
+      kind: tagCompletionKind(directive),
+      name: tag,
+      sortText: tag,
+    }));
+
+    return {
+      entries,
+      isGlobalCompletion: false,
+      isMemberCompletion: false,
+      isNewIdentifierLocation: false,
+    };
   }
 
   getCompletionEntryDetails(

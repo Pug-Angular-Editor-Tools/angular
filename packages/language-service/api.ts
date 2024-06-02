@@ -94,6 +94,8 @@ export interface NgLanguageService extends ts.LanguageService {
   ): ts.RefactorEditInfo | undefined;
 
   hasCodeFixesForErrorCode(errorCode: number): boolean;
+
+  getTagCompletions(fileName: string): ts.WithMetadata<ts.CompletionInfo> | undefined;
 }
 
 export function isNgLanguageService(
