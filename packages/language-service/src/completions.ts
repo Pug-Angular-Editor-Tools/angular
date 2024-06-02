@@ -69,7 +69,7 @@ type PropertyExpressionCompletionBuilder = CompletionBuilder<
   PropertyRead | PropertyWrite | EmptyExpr | SafePropertyRead | TmplAstBoundEvent
 >;
 
-type ElementAttributeCompletionBuilder = CompletionBuilder<
+export type ElementAttributeCompletionBuilder = CompletionBuilder<
   TmplAstElement | TmplAstBoundAttribute | TmplAstTextAttribute | TmplAstBoundEvent
 >;
 
@@ -1055,6 +1055,97 @@ export class CompletionBuilder<N extends TmplAstNode | AST> {
         isElementContext,
         replacementSpan,
         insertSnippet,
+      );
+    }
+
+    return {
+      entries,
+      isGlobalCompletion: false,
+      isMemberCompletion: false,
+      isNewIdentifierLocation: true,
+    };
+  }
+
+  public getTagElementAttributeCompletions(
+    this: ElementAttributeCompletionBuilder,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    let element: TmplAstElement | TmplAstTemplate;
+    if (this.node instanceof TmplAstElement) {
+      element = this.node;
+    } else if (
+      this.nodeParent instanceof TmplAstElement ||
+      this.nodeParent instanceof TmplAstTemplate
+    ) {
+      element = this.nodeParent;
+    } else {
+      // Nothing to do without an element to process.
+      return undefined;
+    }
+
+    const attrTable = buildAttributeCompletionTable(
+      this.component,
+      element,
+      this.compiler.getTemplateTypeChecker(),
+    );
+
+    let entries: ts.CompletionEntry[] = [];
+
+    for (const completion of attrTable.values()) {
+      // First, filter out completions that don't make sense for the current node. For example, if
+      // the user is completing on a property binding `[foo|]`, don't offer output event
+      // completions.
+      switch (completion.kind) {
+        case AttributeCompletionKind.DomEvent:
+          if (this.node instanceof TmplAstBoundAttribute) {
+            continue;
+          }
+          break;
+        case AttributeCompletionKind.DomAttribute:
+        case AttributeCompletionKind.DomProperty:
+          if (this.node instanceof TmplAstBoundEvent) {
+            continue;
+          }
+          break;
+        case AttributeCompletionKind.DirectiveInput:
+          if (this.node instanceof TmplAstBoundEvent) {
+            continue;
+          }
+          if (
+            !completion.twoWayBindingSupported &&
+            this.nodeContext === CompletionNodeContext.TwoWayBinding
+          ) {
+            continue;
+          }
+          break;
+        case AttributeCompletionKind.DirectiveOutput:
+          if (this.node instanceof TmplAstBoundAttribute) {
+            continue;
+          }
+          break;
+        case AttributeCompletionKind.DirectiveAttribute:
+          if (
+            this.node instanceof TmplAstBoundAttribute ||
+            this.node instanceof TmplAstBoundEvent
+          ) {
+            continue;
+          }
+          break;
+      }
+
+      // Is the completion in an attribute context (instead of a property context)?
+      const isAttributeContext =
+        this.node instanceof TmplAstElement || this.node instanceof TmplAstTextAttribute;
+      // Is the completion for an element (not an <ng-template>)?
+      const isElementContext =
+        this.node instanceof TmplAstElement || this.nodeParent instanceof TmplAstElement;
+
+      addAttributeCompletionEntries(
+        entries,
+        completion,
+        isAttributeContext,
+        isElementContext,
+        undefined,
+        undefined,
       );
     }
 

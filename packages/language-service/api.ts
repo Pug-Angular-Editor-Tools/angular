@@ -96,6 +96,10 @@ export interface NgLanguageService extends ts.LanguageService {
   hasCodeFixesForErrorCode(errorCode: number): boolean;
 
   getTagCompletions(fileName: string): ts.WithMetadata<ts.CompletionInfo> | undefined;
+  getAttrCompletions(
+    fileName: string,
+    position: number,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined;
 }
 
 export function isNgLanguageService(

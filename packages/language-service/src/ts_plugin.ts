@@ -154,6 +154,17 @@ export function create(info: ts.server.PluginCreateInfo): NgLanguageService {
     return;
   }
 
+  function getAttrCompletions(
+    fileName: string,
+    position: number,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    if (angularOnly || !isTypeScriptFile(fileName)) {
+      return ngLS.getTagElementAttributeCompletions(fileName, position);
+    }
+
+    return;
+  }
+
   function getCompletionEntryDetails(
     fileName: string,
     position: number,
@@ -375,6 +386,7 @@ export function create(info: ts.server.PluginCreateInfo): NgLanguageService {
     getApplicableRefactors,
     applyRefactoring,
     getTagCompletions,
+    getAttrCompletions,
   };
 }
 
