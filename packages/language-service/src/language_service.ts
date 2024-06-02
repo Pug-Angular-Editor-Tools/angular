@@ -27,7 +27,11 @@ import {
 import {LanguageServiceAdapter, LSParseConfigHost} from './adapters';
 import {ALL_CODE_FIXES_METAS, CodeFixes} from './codefixes';
 import {CompilerFactory} from './compiler_factory';
-import {CompletionBuilder, tagCompletionKind} from './completions';
+import {
+  CompletionBuilder,
+  ElementAttributeCompletionBuilder,
+  tagCompletionKind,
+} from './completions';
 import {DefinitionBuilder} from './definitions';
 import {getOutliningSpans} from './outlining_spans';
 import {QuickInfoBuilder} from './quick_info';
@@ -35,6 +39,7 @@ import {ReferencesBuilder, RenameBuilder} from './references_and_rename';
 import {createLocationKey} from './references_and_rename_utils';
 import {getSignatureHelp} from './signature_help';
 import {
+  getElementAtPosition,
   getTargetAtPosition,
   getTcbNodesOfTemplateAtPosition,
   TargetNodeKind,
@@ -329,6 +334,53 @@ export class LanguageService {
       isMemberCompletion: false,
       isNewIdentifierLocation: false,
     };
+  }
+
+  private getTagElementAttributeCompletionsImpl(
+    fileName: string,
+    position: number,
+    compiler: NgCompiler,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    if (!isTemplateContext(compiler.getCurrentProgram(), fileName, position)) {
+      return undefined;
+    }
+
+    const templateInfo = getTemplateInfoAtPosition(fileName, position, compiler);
+    if (templateInfo === undefined) {
+      return;
+    }
+    const positionDetails = getElementAtPosition(templateInfo.template, position);
+    if (positionDetails === null) {
+      return;
+    }
+
+    // For two-way bindings, we actually only need to be concerned with the bound attribute because
+    // the bindings in the template are written with the attribute name, not the event name.
+    const node =
+      positionDetails.context.kind === TargetNodeKind.TwoWayBindingContext
+        ? positionDetails.context.nodes[0]
+        : positionDetails.context.node;
+    const builder = new CompletionBuilder(
+      this.tsLS,
+      compiler,
+      templateInfo.component,
+      node,
+      positionDetails,
+    );
+
+    if (builder === null) {
+      return undefined;
+    }
+    return (builder as ElementAttributeCompletionBuilder).getTagElementAttributeCompletions();
+  }
+
+  getTagElementAttributeCompletions(
+    fileName: string,
+    position: number,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    return this.withCompilerAndPerfTracing(PerfPhase.LsCompletions, (compiler) => {
+      return this.getTagElementAttributeCompletionsImpl(fileName, position, compiler);
+    });
   }
 
   getCompletionEntryDetails(

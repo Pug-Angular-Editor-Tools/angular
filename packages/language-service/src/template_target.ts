@@ -211,6 +211,50 @@ const OUTSIDE_K_V_MARKER = new OutsideKeyValueMarkerAst(
   new AbsoluteSourceSpan(-1, -1),
 );
 
+export function getElementAtPosition(
+  template: TmplAstNode[],
+  position: number,
+): TemplateTarget | null {
+  const path = TemplateTargetVisitor.visitTemplate(template, position);
+  if (path.length === 0) {
+    return null;
+  }
+
+  let tmplContext: TmplAstTemplate | null = null;
+  let context: TmplAstTemplate | TmplAstElement | null = null;
+
+  for (let i = path.length - 1; i >= 0; i--) {
+    const node = path[i];
+    if (!context && (node instanceof TmplAstTemplate || node instanceof TmplAstElement)) {
+      context = node;
+    }
+
+    if (!tmplContext && node instanceof TmplAstTemplate) {
+      tmplContext = node;
+    }
+
+    if (context && tmplContext) {
+      break;
+    }
+  }
+
+  if (!context) {
+    return null;
+  }
+
+  const nodeInContext: TargetContext = {
+    kind: TargetNodeKind.ElementInTagContext,
+    node: context,
+  };
+
+  return {
+    position,
+    context: nodeInContext,
+    template: tmplContext,
+    parent: null,
+  };
+}
+
 /**
  * Return the template AST node or expression AST node that most accurately
  * represents the node at the specified cursor `position`.
