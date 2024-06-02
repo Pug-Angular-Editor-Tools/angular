@@ -671,8 +671,9 @@ export class CompletionBuilder<N extends TmplAstNode | AST> {
       // We only provide element completions in a text node when there is an open tag immediately to
       // the left of the position.
 
-      const pugState =
-          this.compiler.resourceManager.loadPugState(this.node.sourceSpan.start.file.url)
+      const pugState = this.compiler.resourceManager.loadPugState(
+        this.node.sourceSpan.start.file.url,
+      );
 
       if (!pugState) {
         return this.node.value.substring(0, positionInTextNode).endsWith('<');
@@ -682,10 +683,11 @@ export class CompletionBuilder<N extends TmplAstNode | AST> {
         return true;
       }
 
-      const nodeType = rangeAtHtmlLocation(this.position, pugState).nodeType
+      const nodeType = rangeAtHtmlLocation(this.position, pugState).nodeType;
 
-      const isPugTag = this.node.value.substring(0, positionInTextNode).trim() === '' &&
-          nodeType !== NodeType.ATTRIBUTE
+      const isPugTag =
+        this.node.value.substring(0, positionInTextNode).trim() === '' &&
+        nodeType !== NodeType.ATTRIBUTE;
 
       // add nodes types to pug state, then check if I'm in a valid node (probably just !attribute
       // && !content)
@@ -726,6 +728,29 @@ export class CompletionBuilder<N extends TmplAstNode | AST> {
       name: tag,
       sortText: tag,
       replacementSpan,
+    }));
+
+    return {
+      entries,
+      isGlobalCompletion: false,
+      isMemberCompletion: false,
+      isNewIdentifierLocation: false,
+    };
+  }
+
+  public getElementTagCompletionPug(
+    this: CompletionBuilder<TmplAstElement | TmplAstText>,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    const templateTypeChecker = this.compiler.getTemplateTypeChecker();
+
+    let potentialTags = Array.from(templateTypeChecker.getPotentialElementTags(this.component));
+    // Don't provide non-Angular tags (directive === null) because we expect other extensions
+    // (i.e. Emmet) to provide those for HTML files.
+    potentialTags = potentialTags.filter(([_, directive]) => directive !== null);
+    const entries: ts.CompletionEntry[] = potentialTags.map(([tag, directive]) => ({
+      kind: tagCompletionKind(directive),
+      name: tag,
+      sortText: tag,
     }));
 
     return {
@@ -1217,7 +1242,7 @@ function makeReplacementSpanFromAst(
   };
 }
 
-function tagCompletionKind(directive: PotentialDirective | null): ts.ScriptElementKind {
+export function tagCompletionKind(directive: PotentialDirective | null): ts.ScriptElementKind {
   let kind: DisplayInfoKind;
   if (directive === null) {
     kind = DisplayInfoKind.ELEMENT;

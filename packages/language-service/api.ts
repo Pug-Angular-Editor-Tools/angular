@@ -72,6 +72,7 @@ export interface NgLanguageService extends ts.LanguageService {
     position: number,
   ): GetTemplateLocationForComponentResponse;
   getTypescriptLanguageService(): ts.LanguageService;
+  getTagCompletions(fileName: string): ts.WithMetadata<ts.CompletionInfo> | undefined;
 }
 
 export function isNgLanguageService(

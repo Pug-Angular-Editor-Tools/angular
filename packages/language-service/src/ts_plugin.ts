@@ -136,6 +136,14 @@ export function create(info: ts.server.PluginCreateInfo): NgLanguageService {
     }
   }
 
+  function getTagCompletions(fileName: string): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    if (angularOnly || !isTypeScriptFile(fileName)) {
+      return ngLS.getTagCompletions(fileName);
+    }
+
+    return;
+  }
+
   function getCompletionEntryDetails(
     fileName: string,
     position: number,
@@ -330,6 +338,7 @@ export function create(info: ts.server.PluginCreateInfo): NgLanguageService {
     getCodeFixesAtPosition,
     getCombinedCodeFix,
     getTypescriptLanguageService,
+    getTagCompletions,
   };
 }
 
