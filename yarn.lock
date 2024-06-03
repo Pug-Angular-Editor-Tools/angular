@@ -4549,6 +4549,7 @@
   integrity sha512-XISRgDJ2Tc5q4TRqvgJtzsRkFYNJzZrhTdtMoGVBttwzzQJkPnS3WWTFc7kuDRoPtPakl+T+OfdEUjYJj7Jbow==
 
 "@types/selenium-webdriver4@npm:@types/selenium-webdriver@4.1.22", "@types/selenium-webdriver@^4.1.21":
+  name "@types/selenium-webdriver4"
   version "4.1.22"
   resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-4.1.22.tgz#344519b90727eb713e1ce6d2e0198eb0b4f8f316"
   integrity sha512-MCL4l7q8dwxejr2Q2NXLyNwHWMPdlWE0Kpn6fFwJtvkJF7PTkG5jkvbH/X1IAAQxgt/L1dA8u2GtDeekvSKvOA==
@@ -13484,10 +13485,10 @@ psl@^1.1.28, psl@^1.1.33:
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.9.0.tgz#d0df2a137f00794565fcaf3b2c00cd09f8d5a5a7"
   integrity sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==
 
-pug_html_locator_js@1.0.39:
-  version "1.0.39"
-  resolved "https://registry.yarnpkg.com/pug_html_locator_js/-/pug_html_locator_js-1.0.39.tgz#d0e0f9443298d16bff83052869515eceffd44139"
-  integrity sha512-HHceVB8QiQSh/UGyb/Y4GlbVhY5fLKxMVAZph72U3nfz/HF/5DNMnBLeIPwA6DGS4ymdPZlD6KgHrFYR3Lb2zQ==
+pug_html_locator_js@1.0.40:
+  version "1.0.40"
+  resolved "https://registry.yarnpkg.com/pug_html_locator_js/-/pug_html_locator_js-1.0.40.tgz#7c78ee9b5d2c55250ae3416e786c9c3bfceb1447"
+  integrity sha512-zlbZFkTVicHYoehq313t4LFWB/cJMbL2Lsv7IFLgY7RSBplsIwOWzQXSzUsa24pB/vAWDKSlYBQ41+wvHZghWQ==
   dependencies:
     node-gyp "^9.4.0"
     tree-sitter "^0.20.5"
