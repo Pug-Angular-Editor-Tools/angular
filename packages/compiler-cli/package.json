@@ -52,7 +52,7 @@
     "tslib": "^2.3.0",
     "yargs": "^17.2.1",
     "node-gyp": "9.4.0",
-    "pug_html_locator_js": "1.0.41"
+    "pug_html_locator_js": "1.0.42"
   },
   "peerDependencies": {
     "@angular/compiler": "0.0.0-PLACEHOLDER",
