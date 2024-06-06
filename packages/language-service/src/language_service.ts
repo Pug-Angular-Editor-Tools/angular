@@ -31,6 +31,7 @@ import {
   CompletionBuilder,
   ElementAttributeCompletionBuilder,
   tagCompletionKind,
+  PropertyExpressionCompletionBuilder,
 } from './completions';
 import {DefinitionBuilder} from './definitions';
 import {getOutliningSpans} from './outlining_spans';
@@ -381,6 +382,41 @@ export class LanguageService {
     return this.withCompilerAndPerfTracing(PerfPhase.LsCompletions, (compiler) => {
       return this.getTagElementAttributeCompletionsImpl(fileName, position, compiler);
     });
+  }
+
+  getPropertyExpressionCompletionsAtPosition(
+    fileName: string,
+    position: number,
+    options: ts.GetCompletionsAtPositionOptions | undefined,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    return this.withCompilerAndPerfTracing(PerfPhase.LsCompletions, (compiler) => {
+      return this.getPropertyExpressionCompletionsAtPositionImpl(
+        fileName,
+        position,
+        options,
+        compiler,
+      );
+    });
+  }
+
+  private getPropertyExpressionCompletionsAtPositionImpl(
+    fileName: string,
+    position: number,
+    options: ts.GetCompletionsAtPositionOptions | undefined,
+    compiler: NgCompiler,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    if (!isTemplateContext(compiler.getCurrentProgram(), fileName, position)) {
+      return undefined;
+    }
+
+    let builder = this.getCompletionBuilder(fileName, position, compiler);
+    if (builder === null) {
+      return undefined;
+    }
+
+    return (builder as PropertyExpressionCompletionBuilder).getPropertyExpressionCompletion(
+      options,
+    );
   }
 
   getCompletionEntryDetails(
