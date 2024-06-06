@@ -165,6 +165,18 @@ export function create(info: ts.server.PluginCreateInfo): NgLanguageService {
     return;
   }
 
+  function getPropertyExpressionCompletions(
+    fileName: string,
+    position: number,
+    options: ts.GetCompletionsAtPositionOptions,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined {
+    if (angularOnly || !isTypeScriptFile(fileName)) {
+      return ngLS.getPropertyExpressionCompletionsAtPosition(fileName, position, options);
+    }
+
+    return;
+  }
+
   function getCompletionEntryDetails(
     fileName: string,
     position: number,
@@ -387,6 +399,7 @@ export function create(info: ts.server.PluginCreateInfo): NgLanguageService {
     applyRefactoring,
     getTagCompletions,
     getAttrCompletions,
+    getPropertyExpressionCompletions,
   };
 }
 

@@ -65,7 +65,7 @@ import {TargetContext, TargetNodeKind, TemplateTarget} from './template_target';
 import {getCodeActionToImportTheDirectiveDeclaration, standaloneTraitOrNgModule} from './ts_utils';
 import {filterAliasImports, isBoundEventWithSyntheticHandler, isWithin} from './utils';
 
-type PropertyExpressionCompletionBuilder = CompletionBuilder<
+export type PropertyExpressionCompletionBuilder = CompletionBuilder<
   PropertyRead | PropertyWrite | EmptyExpr | SafePropertyRead | TmplAstBoundEvent
 >;
 
@@ -352,7 +352,7 @@ export class CompletionBuilder<N extends TmplAstNode | AST> {
   /**
    * Get completions for property expressions.
    */
-  private getPropertyExpressionCompletion(
+  public getPropertyExpressionCompletion(
     this: PropertyExpressionCompletionBuilder,
     options: ts.GetCompletionsAtPositionOptions | undefined,
   ): ts.WithMetadata<ts.CompletionInfo> | undefined {
@@ -418,7 +418,7 @@ export class CompletionBuilder<N extends TmplAstNode | AST> {
   /**
    * Get the details of a specific completion for a property expression.
    */
-  private getPropertyExpressionCompletionDetails(
+  public getPropertyExpressionCompletionDetails(
     this: PropertyExpressionCompletionBuilder,
     entryName: string,
     formatOptions: ts.FormatCodeOptions | ts.FormatCodeSettings | undefined,

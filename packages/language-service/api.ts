@@ -100,6 +100,11 @@ export interface NgLanguageService extends ts.LanguageService {
     fileName: string,
     position: number,
   ): ts.WithMetadata<ts.CompletionInfo> | undefined;
+  getPropertyExpressionCompletions(
+    fileName: string,
+    position: number,
+    options: ts.GetCompletionsAtPositionOptions,
+  ): ts.WithMetadata<ts.CompletionInfo> | undefined;
 }
 
 export function isNgLanguageService(
